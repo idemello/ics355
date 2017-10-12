@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
 recDB = open('records.txt', 'r')
-currDB = open('curr.txt', 'r')
 
 
 #class User(curr):
@@ -25,6 +24,42 @@ def ClearList(recList):
         recList[j] = recList[j].replace("\n", "")
     return recList
 
+def UserMenu():
+    
+    currDB = open('curr.txt', 'r')
+    currList = list(currDB)
+    newCurrList = []
+    print(currList)
+    print('\n\n\n\n\n\n\n\n')
+    for i in range(0, len(currList)):
+        print(currList[i])
+        newCurrList.append(currList[i].split())
+    print(newCurrList)
+    print(newCurrList[0][0])
+    choice = 0;
+    convertFrom = ''
+    convertFromValue = 0
+
+    print('What would you like to do?')
+    while choice != 2:
+        print('1. MAINT')
+        print('2. EXIT')
+        choice = int(input())
+        if choice == 1:
+            print('What currency would you like to convert?')
+            print('EX: USD, JPY, GBP')
+            convertFrom = str(input())
+            print('What currency would you like to convert to?');
+            convertFromValue = int(input())
+    
+
+        elif choice == 2:
+            print('Goodbye')
+        else:
+            print('Invalid Entry')
+    
+    currDB.close()
+
 def UserFind(recList, user):
     uFound = 0
 
@@ -35,6 +70,7 @@ def UserFind(recList, user):
 
     if uFound == 1:
         print('Welcome ' + user)
+        UserMenu()
     else: 
         print('User not found')
         print('Would you like to add yourself as a user?')
@@ -66,4 +102,3 @@ for x in range(len(recList)):
     recDB.write(str(recList[x]) + '\n')
 
 recDB.close()
-currDB.close()
