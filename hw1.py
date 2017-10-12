@@ -29,14 +29,34 @@ def UserMenu():
     currDB = open('curr.txt', 'r')
     currList = list(currDB)
     newCurrList = []
+    a, b, c  = [], [], []
+
     print(currList)
+    print('**************')
+    print(len(currList))
     print('\n\n\n\n\n\n\n\n')
     for i in range(0, len(currList)):
         print(currList[i])
         newCurrList.append(currList[i].split())
     print(newCurrList)
-    print(newCurrList[0][0])
-    choice = 0;
+    print(newCurrList[0][3])
+    print(type(newCurrList[0][3]))
+
+    #Curr1 to Standard the from Standard
+    for j in range (0, len(currList) - 1):
+        print(j)
+        a.append(newCurrList[j][0])
+        b.append(newCurrList[j][-2])
+        c.append(newCurrList[j][-1])
+    
+    toDict = dict(zip(a,b))
+    fromDict = dict(zip(a,c))
+
+
+    print(toDict)
+    print(fromDict)
+    print(toDict)
+    choice = 0
     convertFrom = ''
     convertFromValue = 0
 
