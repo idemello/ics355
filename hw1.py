@@ -1,8 +1,5 @@
 #!/usr/bin/env python3
 
-recDB = open('records.txt', 'r')
-
-
 #class User(curr):
 
 #    def __init__(self, name, currencies):
@@ -80,8 +77,8 @@ def UserMenu():
             amount = float(input())
             convertAmount = amount * convertFromValue
             total = convertAmount * convertToValue
-            print("Converting " + str(amount) + " " + convertFrom + "To " + convertTo)
-            print("The final value is: " + str(total))
+            print("Converting " + str(amount) + " " + convertFrom + " to " + convertTo)
+            print("The final value is: " + str(total) + " " + convertTo)
 
         elif choice == 2:
             print('Goodbye')
@@ -92,6 +89,7 @@ def UserMenu():
 
 def UserFind(recList, user):
     uFound = 0
+    valid = 0
 
     for i in range(0, len(recList)):
 
@@ -105,30 +103,37 @@ def UserFind(recList, user):
         print('User not found')
         print('Would you like to add yourself as a user?')
         print('y/n?')
+        while(
         newUser = str(input()).lower()
         if newUser == 'y':
-            print('Enter new User Name')
-            newUserName = str(input())
+            newUserName = str(input('Enter new user name\n'))
             recList.append(newUserName)
         if newUser == 'n':
             print('Goodbye')
 
     return recList
 
+def main():
+
+    
+    recDB = open('records.txt', 'r')
 
 
-print('Welcome to the Financial Calculator')
-print('Enter your user name')
+    print('Welcome to the Financial Calculator')
+    #print('Enter your user name')
 
-user = str(input())
-recList = list(recDB)
-uFound = 0
+    user = str(input('Enter your user name\n'))
+    recList = list(recDB)
+    uFound = 0
 
-recList = ClearList(recList)
-UserFind(recList, user)
+    recList = ClearList(recList)
+    UserFind(recList, user)
 
-recDB = open('records.txt', 'w')
-for x in range(len(recList)):
-    recDB.write(str(recList[x]) + '\n')
+    recDB = open('records.txt', 'w')
+    for x in range(len(recList)):
+        recDB.write(str(recList[x]) + '\n')
 
-recDB.close()
+    recDB.close()
+
+if __name__ == "__main__":
+    main()
