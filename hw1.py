@@ -49,8 +49,8 @@ def UserMenu():
         b.append(newCurrList[j][-2])
         c.append(newCurrList[j][-1])
     
-    toDict = dict(zip(a,b))
-    fromDict = dict(zip(a,c))
+    toDict = dict(zip(a,c))
+    fromDict = dict(zip(a,b))
 
 
     print(toDict)
@@ -59,6 +59,7 @@ def UserMenu():
     choice = 0
     convertFrom = ''
     convertFromValue = 0
+    total = 0
 
     print('What would you like to do?')
     while choice != 2:
@@ -69,9 +70,18 @@ def UserMenu():
             print('What currency would you like to convert?')
             print('EX: USD, JPY, GBP')
             convertFrom = str(input())
-            print('What currency would you like to convert to?');
-            convertFromValue = int(input())
-    
+            print (float(toDict[convertFrom]))
+            convertFromValue = (float(toDict[convertFrom]))
+            print('What currency would you like to convert to?')
+            convertTo = str(input())
+            convertToValue = float(fromDict[convertTo])
+            print(convertToValue)
+            print('What amount would you like to convert?')
+            amount = float(input())
+            convertAmount = amount * convertFromValue
+            total = convertAmount * convertToValue
+            print("Converting " + str(amount) + " " + convertFrom + "To " + convertTo)
+            print("The final value is: " + str(total))
 
         elif choice == 2:
             print('Goodbye')
