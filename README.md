@@ -1,12 +1,15 @@
-File Name: FinCalc
+# File Name: FinCalc
 
-Depencies/How to run: This file only uses pythons built-in functions. As a result there are no downloads or installs necessary to run this program. Please note that this program was written in python3 and is not backwards compatible with python 2.x versions. The program can be run from the command line using: python3 finCalc.py. Please make sure that the records.txt file is in the same folder as the finCalc file.
+## Depencies/How to run: 
+This file only uses pythons built-in functions. As a result there are no downloads or installs necessary to run this program. Please note that this program was written in python3 and is not backwards compatible with python 2.x versions. The program can be run from the command line using: python3 finCalc.py. Please make sure that the records.txt file is in the same folder as the finCalc file.
 
-Purpose: The purpose of this assignment was to create a financial calulator that would save a users financial information across various runs of the program. The program was to be made to add values to the users account, subtract, as well as convert values. The program must also be able to read and write the database information so that it can be used in between runs.
+## Purpose: 
+The purpose of this assignment was to create a financial calulator that would save a users financial information across various runs of the program. The program was to be made to add values to the users account, subtract, as well as convert values. The program must also be able to read and write the database information so that it can be used in between runs.
 
-Documentation: All functions are better documented within the finCalc.py file itself
+## Documentation: 
+All functions are better documented within the finCalc.py file itself
 
-Sample run:
+## Sample run:
 
 Here is the record.txt file before a run is performed
 
@@ -58,7 +61,7 @@ What would you like to do?
 2. Deposit
 3. Withdraw
 4. Exit
-2
+2:
 Info: Deposit will add money to the users account
 What currency type will you add(USD, EUR, GBP)?
 USD
