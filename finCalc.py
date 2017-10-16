@@ -22,7 +22,6 @@ class User:
         self.GBPBalance = float(GBPBalance)
 
     def whoami(self):
-        print(self.name)
         return self.name
 
 #Function Name: deposit
@@ -330,7 +329,6 @@ def main():
     #A very ugly write method
     #would love suggestions on how to clean this up or make it more "pythonic"
     outputList.insert(0, '\n')
-    print(outputList)
     for n in range( 1 , len(outputList)):
         output.write(outputList[0])
         output.write(outputList[n][0] + '\n')
