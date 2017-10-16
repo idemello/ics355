@@ -5,11 +5,11 @@ class User:
     
     count = 0
 
-    def __init__(self, name, USBalance, EURBalance, GBRBalance):
+    def __init__(self, name, USBalance, EURBalance, GBPBalance):
         self.name = name
         self.USBalance = float(USBalance)
         self.EURBalance = float(EURBalance)
-        self.GBRBalance = float(GBRBalance)
+        self.GBPBalance = float(GBPBalance)
         User.count += 1
 
     def whoami(self):
@@ -24,8 +24,8 @@ class User:
             self.EURBalance += amount
             return self.EURBalance
         else:
-            self.GBRBalance += amount
-            return self.GBRBalance
+            self.GBPBalance += amount
+            return self.GBPBalance
 
     def withdraw(self, amount, origin):
         
@@ -43,10 +43,10 @@ class User:
                 return self.EURBalance
                 
             else:
-                if amount > self.GBRBalance:
+                if amount > self.GBPBalance:
                     raise RuntimeError('Insufficient Funds')
-                self.GBRBalance -= amount
-                return self.GBRBalance
+                self.GBPBalance -= amount
+                return self.GBPBalance
         except RuntimeError:
            print("Insufficient Funds, please enter a valid number")
 
@@ -59,9 +59,9 @@ class User:
             elif originTo == 'EUR':
                 self.EURBalance += Converter('USD', 'EUR', amount)
                 return self.EURBalance
-            elif originTo == 'GBR':
-                self.GBRBalance += Converter('USD', 'GBR', amount)
-                return self.GBRBalance
+            elif originTo == 'GBP':
+                self.GBPBalance += Converter('USD', 'GBP', amount)
+                return self.GBPBalance
         elif originFrom == 'EUR':
             self.EURBalance -= amount
             if originTo == 'USD':
@@ -70,26 +70,29 @@ class User:
             elif originTo == 'EUR':
                 self.EURBalance += amount
                 return self.EURBalance
-            elif originTo == 'GBR':
-                self.GBRBalance += Converter('EUR', 'GBR', amount)
-                return self.GBRBalance
-        elif originFrom == 'GBR':
-            self.GBRBalance -= amount
+            elif originTo == 'GBP':
+                self.GBPBalance += Converter('EUR', 'GBP', amount)
+                return self.GBPBalance
+        elif originFrom == 'GBP':
+            self.GBPBalance -= amount
             if originTo == 'USD':
-                self.USBalance += Converter('GBR', 'USD', amount)
+                self.USBalance += Converter('GBP', 'USD', amount)
                 return self.USBalance
             elif originTo == 'EUR':
-                self.EURBalance += Converter('GBR', 'EUR', amount)
+                self.EURBalance += Converter('GBP', 'EUR', amount)
                 return self.EURBalance
-            elif originTo == 'GBR':
-                self.GBRBalance += amount
-                return self.GBRBalance
+            elif originTo == 'GBP':
+                self.GBPBalance += amount
+                return self.GBPBalance
 
     def dump(self):
-        print(self.name + "has the follwing balances: ")
+        print(self.name + " has the follwing balances: ")
         print("USD Balance = " + str(self.USBalance))
         print("EUR Balance = " + str(self.EURBalance))
-        print("GBR Balance = " + str(self.GBRBalance))
+        print("GBP Balance = " + str(self.GBPBalance))
+
+    def detail(self):
+        return self.name, self.USBalance, self.EURBalance, self.GBPBalance
 
 def Converter(convertFrom, convertTo, amount):
 
@@ -141,13 +144,13 @@ def Interface(username):
                 username.convert(currTypeFrom, currTypeTo, currAmount)
             elif choice == 2:
                 print("Info: Deposit will add money to the users account")
-                currType = str(input("What currency type will you add(USD, EUR, GBR)?\n"))
+                currType = str(input("What currency type will you add(USD, EUR, GBP)?\n"))
                 currAmount = int(input("How much will you add?"))
                 username.deposit(currAmount, currType)
                  
             elif choice == 3:
                 print("Info: Withdraw will remove money from the users account")
-                currType = str(input("What currency type will you withdraw(USD, EUR, GBR)?\n"))
+                currType = str(input("What currency type will you withdraw(USD, EUR, GBP)?\n"))
                 currAmount = int(input("How much will you withdraw?\n"))
                 username.withdraw(currAmount, currType)
                 
@@ -160,10 +163,9 @@ def Interface(username):
 def main():
 
     print('Welcome to the Financial Database')
-    userChoice = str(input('Enter your user name\n'))
     classList = []
     userDB = open("records.txt", "r")
-
+    
     #put all lines in the database to a list
     #includes the newline char
     for line in userDB:
@@ -202,5 +204,26 @@ def main():
 
     for y in range(len(classList)):
         print(classList[y].dump())
+
+    outputList = []
+    for z in range(len(classList)):
+        outputList.append(classList[z].detail())
+
+    print(outputList[0][0])
+    print(outputList)
+    output = open("records.txt", "w")
+    
+    outputList.insert(0, '\n')
+    print(outputList)
+    for n in range( 1 , len(outputList)):
+        output.write(outputList[0])
+        output.write(outputList[n][0] + '\n')
+        output.write(str(outputList[n][1]) + '\n')
+        output.write('USD\n')
+        output.write(str(outputList[n][2]) + '\n')
+        output.write('EUR\n')
+        output.write(str(outputList[n][3])+ '\n')
+        output.write('GBR\n')
+
 if __name__ == "__main__":
     main()
