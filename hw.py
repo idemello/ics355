@@ -1,5 +1,15 @@
 #!/usr/bin/env python3
+'''
+Program Name: FinCalc.py
 
+Author: Isaac DeMello
+
+Class: ICS 355 - Security and Trust
+
+Instructors: Dan Clark, Mark Nelson
+
+Date: October 15, 2017
+'''
 
 class User:
     
@@ -11,11 +21,34 @@ class User:
         self.EURBalance = float(EURBalance)
         self.GBPBalance = float(GBPBalance)
         User.count += 1
+'''
+Function Name: whoami
+
+Purpose: To check the name of the object quickly
+
+Parameters:
+None
+
+Return Values:
+Returns the name of the object
+'''
 
     def whoami(self):
         print(self.name)
         return self.name
+'''
+Function Name: deposit
 
+Purpose: Add an amount of a type of currency to the users account
+
+Parameters:
+amount: The amount to be added
+origin: The type of currency to be added
+
+return values:
+This function returns the new account balance
+
+'''
     def deposit(self, amount, origin):
         if origin == 'USD':
             self.USBalance += amount
@@ -26,6 +59,20 @@ class User:
         else:
             self.GBPBalance += amount
             return self.GBPBalance
+'''
+Function Name: withdraw
+
+Purpose: This function subtracts a value from the users account
+         If there are insufficient funds the program will notify the user
+
+Parameters:
+amount: The amount to be withdrawn
+origin: The type of currency to be withdrawn
+
+Return Values: 
+The new account balance after withdrawl
+
+'''
 
     def withdraw(self, amount, origin):
         
@@ -49,7 +96,24 @@ class User:
                 return self.GBPBalance
         except RuntimeError:
            print("Insufficient Funds, please enter a valid number")
+'''
+Function Name: convert
 
+Purpose: The convert function takes in user specified inputs, it takes away from the users
+         balance of a particular currency then adds the converted currency to their account.
+         No money is lost in this process
+
+Parameters: 
+originFrom: The type of currency to be converted
+originTo: The type of currency that will be added after conversion
+amount: The amount of currency that will be converted
+
+Return Values:
+Dont really even know where to start with this
+comments and suggestions on how to return this spaghetti method would be 
+appreciated!
+Disclaimer: This function works, its just spaghetti
+'''
     def convert(self, originFrom, originTo, amount):
         if originFrom == 'USD':
             self.USBalance -= amount
@@ -84,6 +148,18 @@ class User:
             elif originTo == 'GBP':
                 self.GBPBalance += amount
                 return self.GBPBalance
+'''
+Function Name: dump
+
+Purpose: The dump function displays instance variables in a user friendly way
+
+Parameters:
+None
+
+Return Values:
+None
+
+'''
 
     def dump(self):
         print(self.name + " has the follwing balances: ")
@@ -91,8 +167,41 @@ class User:
         print("EUR Balance = " + str(self.EURBalance))
         print("GBP Balance = " + str(self.GBPBalance))
 
+'''
+Method Name: detail
+
+Purpose: The method name uses pythons syntatic sugar to return a tuple of all instance variables
+
+Parameters:
+None
+
+Return Values:
+The return values of this function are all the instance variables of the object this method is
+called upon
+'''
+
     def detail(self):
         return self.name, self.USBalance, self.EURBalance, self.GBPBalance
+
+'''
+Function Name: Converter
+
+Purpose: The Converter function converts a certain amount of a currency into another
+         the function will subtract the converted amount and add the desired type of 
+         currency to the user account
+
+Parameters:
+convertFrom: This value is the type of currency that the user would like to convert from.
+             this currency type is taken away from the user's account BEFORE conversion.
+
+convertTo:   This value is the type of currency that the user would like to convert to.
+             This currency type is add to the user's account AFTER conversion.
+
+amount:      The amount to be converted.
+
+Return values: 
+ConvertedTotal: This returns the amount that was converted
+'''
 
 def Converter(convertFrom, convertTo, amount):
 
@@ -119,6 +228,17 @@ def Converter(convertFrom, convertTo, amount):
 
     return float(convertedTotal)
 
+'''
+Function Name: Options
+
+Purpose: This funciton only serves to condense my code
+
+Parameters:
+None
+
+Return:
+None
+'''
 def Options():
 
     print('What would you like to do?')
@@ -127,7 +247,19 @@ def Options():
     print('3. Withdraw')
     print('4. Exit')
 
+'''
+Function Name:Interface
 
+Purpose: The interface function, interacts with the user and calls the appropriate functions
+
+Parameters:
+username: The username is actually an object of the type user this
+          make is easier to call the methods of the user class
+
+Return Values:
+1: The function will return 1 when the user is ready to exit
+'''
+    
 def Interface(username):
 
     print("Welcome " + username.whoami())
@@ -156,9 +288,11 @@ def Interface(username):
                 
             Options()
             choice = int(input())
-
+    
     except ValueError:
         print("Invalid Entry, please enter a number")
+
+    return 1;
 
 def main():
 
@@ -185,15 +319,14 @@ def main():
         name = User(name2, userList[(8*j)+1], userList[(8*j)+3], userList[(8*j)+5])
         classList.append(name)
  
-    print(classList)
-    for k in range(len(classList)):
-        print(classList[k].dump())
-        print(classList[k].whoami())
-        print(type(classList[k].whoami()))
-
+   
     username = input('Please enter your username\n')
     ufound = 0
-
+    
+    #iterates through all the usernames in the database
+    #To find a match
+    #If a match is found then the user will be able to access
+    #The database
     for x in range(len(classList)): 
         if username == classList[x].whoami():
            Interface(classList[x])
@@ -201,18 +334,18 @@ def main():
 
     if ufound == 0:
         print('User not found, please try again')
-
-    for y in range(len(classList)):
-        print(classList[y].dump())
-
+    
+    #this creates a list of tuples so that the write()
+    #function can be performed more simply
     outputList = []
     for z in range(len(classList)):
         outputList.append(classList[z].detail())
 
-    print(outputList[0][0])
-    print(outputList)
+    
     output = open("records.txt", "w")
     
+    #A very ugly write method
+    #would love suggestions on how to clean this up or make it more "pythonic"
     outputList.insert(0, '\n')
     print(outputList)
     for n in range( 1 , len(outputList)):
