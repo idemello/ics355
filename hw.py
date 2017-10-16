@@ -7,13 +7,14 @@ class User:
 
     def __init__(self, name, USBalance, JPBalance, GBRBalance):
         self.name = name
-        self.USBalance = USBalance
-        self.JPBalance = JPBalance
-        self.GBRBalance = GBRBalance
+        self.USBalance = int(USBalance)
+        self.JPBalance = int(JPBalance)
+        self.GBRBalance = int(GBRBalance)
         User.count += 1
 
     def whoami(self):
         print(self.name)
+        return self.name
 
     def deposit(self, amount, origin):
         if origin == 'USD':
@@ -34,9 +35,9 @@ class User:
     
     def dump(self):
         print(self.name + "has the follwing balances: ")
-        print("USD Balance = " + self.USBalance)
-        print("JPY Balance = " + self.JPBalance)
-        print("GBR Balance = " + self.GBRBalance)
+        print("USD Balance = " + str(self.USBalance))
+        print("JPY Balance = " + str(self.JPBalance))
+        print("GBR Balance = " + str(self.GBRBalance))
 
 def UserMenu():
 
@@ -56,16 +57,38 @@ def UserMenu():
     toDict = dict(zip(a,c))
     fromDict = dict(zip(a,b))
 
-def Interface():
+def Options():
 
     print('What would you like to do?')
     print('1. Maint')
     print('2. Deposit')
     print('3. Withdraw')
-    print('4. Convert')
-    print('5. Exit')
+    print('4. Exit')
 
-    choice = int(input())
+
+def Interface(username):
+
+    print("Welcome " + username.whoami())
+    print(username.whoami())
+    Options()
+    try:
+        choice = int(input())
+        while choice != 4:
+            if choice == 1:
+                print("Info: Maint is used to convert one currency to another")
+            elif choice == 2:
+                print("Info: Deposit will add money to the users account")
+                currType = str(input("What currency type will you add(USD, JPY, GBR)?\n"))
+                currAmount = int(input("How much will you add?"))
+                username.deposit(currAmount, currType)
+                
+            elif choice == 3:
+                print("Info: WIthdraw will remove money from the users account")
+            Options()
+            choice = int(input())
+
+    except ValueError:
+        print("Invalid Entry, please enter a number")
 
 def main():
 
@@ -92,14 +115,25 @@ def main():
         name, name2 = userList[8*j], userList[8*j]
         name = User(name2, userList[(8*j)+1], userList[(8*j)+3], userList[(8*j)+5])
         classList.append(name)
-
-    
+ 
     print(classList)
     for k in range(len(classList)):
         print(classList[k].dump())
         print(classList[k].whoami())
+        print(type(classList[k].whoami()))
 
-    Interface()
+    username = input('Please enter your username\n')
+    ufound = 0
 
+    for x in range(len(classList)): 
+        if username == classList[x].whoami():
+           Interface(classList[x])
+           ufound = 1
+
+    if ufound == 0:
+        print('User not found, please try again')
+
+    for y in range(len(classList)):
+        print(classList[y].dump())
 if __name__ == "__main__":
     main()
