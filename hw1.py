@@ -1,20 +1,23 @@
 #!/usr/bin/env python3
 
-#class User(curr):
 
-#    def __init__(self, name, currencies):
-#        self.name = name
-#        self.currencies = currencies
-#   
+class User:
+
+    def __init__(self, name):
+        self.name = name
+   
 #    def convert(currency):
-#        #converts user balance to new currency
-#        #CANNOT convert if desired converstion is greater than balance
-# 
+        #converts user balance to new currency
+        #CANNOT convert if desired converstion is greater than balance
+ 
 #    def newCurr(currency):
-#        #Adds a new currency to the user's account
-#
+        #Adds a new currency to the user's account
+
+#    def withdraw(currency):
+        #subtracts currency from users account
+
 #    def details():
-#        #prints out the user name and all currencies in that users possesion
+        #prints out the user name and all currencies in that users possesion
 
 def ClearList(recList):
     for j in range(0, len(recList)):
@@ -28,20 +31,11 @@ def UserMenu():
     newCurrList = []
     a, b, c  = [], [], []
 
-    print(currList)
-    print('**************')
-    print(len(currList))
-    print('\n\n\n\n\n\n\n\n')
     for i in range(0, len(currList)):
-        print(currList[i])
         newCurrList.append(currList[i].split())
-    print(newCurrList)
-    print(newCurrList[0][3])
-    print(type(newCurrList[0][3]))
 
     #Curr1 to Standard the from Standard
     for j in range (0, len(currList) - 1):
-        print(j)
         a.append(newCurrList[j][0])
         b.append(newCurrList[j][-2])
         c.append(newCurrList[j][-1])
@@ -49,10 +43,6 @@ def UserMenu():
     toDict = dict(zip(a,c))
     fromDict = dict(zip(a,b))
 
-
-    print(toDict)
-    print(fromDict)
-    print(toDict)
     choice = 0
     convertFrom = ''
     convertFromValue = 0
@@ -64,21 +54,24 @@ def UserMenu():
         print('2. EXIT')
         choice = int(input())
         if choice == 1:
-            print('What currency would you like to convert?')
-            print('EX: USD, JPY, GBP')
-            convertFrom = str(input())
-            print (float(toDict[convertFrom]))
-            convertFromValue = (float(toDict[convertFrom]))
-            print('What currency would you like to convert to?')
-            convertTo = str(input())
-            convertToValue = float(fromDict[convertTo])
-            print(convertToValue)
-            print('What amount would you like to convert?')
-            amount = float(input())
-            convertAmount = amount * convertFromValue
-            total = convertAmount * convertToValue
-            print("Converting " + str(amount) + " " + convertFrom + " to " + convertTo)
-            print("The final value is: " + str(total) + " " + convertTo)
+            try:
+                print('What currency would you like to convert?')
+                print('EX: USD, JPY, GBP')
+                convertFrom = str(input())
+    #           print (float(toDict[convertFrom]))
+                convertFromValue = (float(toDict[convertFrom]))
+                print('What currency would you like to convert to?')
+                convertTo = str(input())
+                convertToValue = float(fromDict[convertTo])
+    #           print(convertToValue)
+                print('What amount would you like to convert?')
+                amount = float(input())
+                convertAmount = amount * convertFromValue
+                total = convertAmount * convertToValue
+                print("Converting " + str(amount) + " " + convertFrom + " to " + convertTo)
+                print("The final value is: " + str(round(total,2)) + " " + convertTo)
+            except KeyError:
+                print("Currency not found, please enter a valid currency")
 
         elif choice == 2:
             print('Goodbye')
@@ -88,8 +81,12 @@ def UserMenu():
     currDB.close()
 
 def UserFind(recList, user):
+    
     uFound = 0
     valid = 0
+    
+    uDB = open('records.txt', 'r')
+    uSave.close('records.txt', 'r')
 
     for i in range(0, len(recList)):
 
@@ -103,13 +100,23 @@ def UserFind(recList, user):
         print('User not found')
         print('Would you like to add yourself as a user?')
         print('y/n?')
-        while(
-        newUser = str(input()).lower()
-        if newUser == 'y':
-            newUserName = str(input('Enter new user name\n'))
-            recList.append(newUserName)
-        if newUser == 'n':
-            print('Goodbye')
+        uChoice = str(input()).lower()
+        while(valid == 0):
+            if uChoice == 'y':
+                newUserName = str(input('Enter new user name\n'))
+                newUser = User(newUserName)
+                recList.append(newUser)
+                valid = 1
+            if uChoice == 'n':
+                print('Goodbye')
+                valid = 1
+            else:
+                print('Please enter y/n')
+                print('Would you like to add yourself as a user')
+                print('y/n?')
+                
+    uDB.close()
+    uSave.close()
 
     return recList
 
@@ -117,7 +124,6 @@ def main():
 
     
     recDB = open('records.txt', 'r')
-
 
     print('Welcome to the Financial Calculator')
     #print('Enter your user name')
