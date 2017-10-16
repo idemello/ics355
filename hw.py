@@ -5,11 +5,11 @@ class User:
     
     count = 0
 
-    def __init__(self, name, USBalance, JPBalance, GBRBalance):
+    def __init__(self, name, USBalance, EURBalance, GBRBalance):
         self.name = name
-        self.USBalance = int(USBalance)
-        self.JPBalance = int(JPBalance)
-        self.GBRBalance = int(GBRBalance)
+        self.USBalance = float(USBalance)
+        self.EURBalance = float(EURBalance)
+        self.GBRBalance = float(GBRBalance)
         User.count += 1
 
     def whoami(self):
@@ -20,9 +20,9 @@ class User:
         if origin == 'USD':
             self.USBalance += amount
             return self.USBalance
-        elif origin == 'JP':
-            self.JPBalance += amount
-            return self.JPBalance
+        elif origin == 'EUR':
+            self.EURBalance += amount
+            return self.EURBalance
         else:
             self.GBRBalance += amount
             return self.GBRBalance
@@ -36,11 +36,11 @@ class User:
                 self.USBalance -= amount
                 return self.USBalance
             
-            elif origin == 'JP':
-                if amount > self.JPBalance:
+            elif origin == 'EUR':
+                if amount > self.EURBalance:
                     raise RuntimeError('Insufficient Funds')
-                self.JPBalance -= amount
-                return self.JPBalance
+                self.EURBalance -= amount
+                return self.EURBalance
                 
             else:
                 if amount > self.GBRBalance:
@@ -50,13 +50,48 @@ class User:
         except RuntimeError:
            print("Insufficient Funds, please enter a valid number")
 
+    def convert(self, originFrom, originTo, amount):
+        if originFrom == 'USD':
+            self.USBalance -= amount
+            if originTo == 'USD':
+                self.USBalance += amount
+                return self.USBalance
+            elif originTo == 'EUR':
+                self.EURBalance += Converter('USD', 'EUR', amount)
+                return self.EURBalance
+            elif originTo == 'GBR':
+                self.GBRBalance += Converter('USD', 'GBR', amount)
+                return self.GBRBalance
+        elif originFrom == 'EUR':
+            self.EURBalance -= amount
+            if originTo == 'USD':
+                self.USBalance += Converter('EUR', 'USD', amount)
+                return self.USBalance
+            elif originTo == 'EUR':
+                self.EURBalance += amount
+                return self.EURBalance
+            elif originTo == 'GBR':
+                self.GBRBalance += Converter('EUR', 'GBR', amount)
+                return self.GBRBalance
+        elif originFrom == 'GBR':
+            self.GBRBalance -= amount
+            if originTo == 'USD':
+                self.USBalance += Converter('GBR', 'USD', amount)
+                return self.USBalance
+            elif originTo == 'EUR':
+                self.EURBalance += Converter('GBR', 'EUR', amount)
+                return self.EURBalance
+            elif originTo == 'GBR':
+                self.GBRBalance += amount
+                return self.GBRBalance
+
     def dump(self):
         print(self.name + "has the follwing balances: ")
         print("USD Balance = " + str(self.USBalance))
-        print("JPY Balance = " + str(self.JPBalance))
+        print("EUR Balance = " + str(self.EURBalance))
         print("GBR Balance = " + str(self.GBRBalance))
 
-def UserMenu():
+def Converter(convertFrom, convertTo, amount):
 
     currDB = open('currencyList.txt', 'r')
     currList = list(currDB)
@@ -73,6 +108,13 @@ def UserMenu():
 
     toDict = dict(zip(a,c))
     fromDict = dict(zip(a,b))
+
+    convertFromValue = float(toDict[convertFrom])
+    convertToValue = float(fromDict[convertTo])
+    convertAmount = amount * convertFromValue
+    convertedTotal = convertAmount * convertToValue
+
+    return float(convertedTotal)
 
 def Options():
 
@@ -93,15 +135,19 @@ def Interface(username):
         while choice != 4:
             if choice == 1:
                 print("Info: Maint is used to convert one currency to another")
+                currTypeFrom = str(input("What currency would you like to convert from?\n"))
+                currTypeTo = str(input("What currency would you like to convert to?\n"))
+                currAmount = float(input("What amount would you like to convert?\n"))
+                username.convert(currTypeFrom, currTypeTo, currAmount)
             elif choice == 2:
                 print("Info: Deposit will add money to the users account")
-                currType = str(input("What currency type will you add(USD, JPY, GBR)?\n"))
+                currType = str(input("What currency type will you add(USD, EUR, GBR)?\n"))
                 currAmount = int(input("How much will you add?"))
                 username.deposit(currAmount, currType)
                  
             elif choice == 3:
                 print("Info: Withdraw will remove money from the users account")
-                currType = str(input("What currency type will you withdraw(USD, JPY, GBR)?\n"))
+                currType = str(input("What currency type will you withdraw(USD, EUR, GBR)?\n"))
                 currAmount = int(input("How much will you withdraw?\n"))
                 username.withdraw(currAmount, currType)
                 
