@@ -1,15 +1,15 @@
 #!/usr/bin/env python3
-'''
-Program Name: FinCalc.py
+#'''
+#Program Name: FinCalc.py
+#
+#Author: Isaac DeMello
+#
+#Class: ICS 355 - Security and Trust
+#
+#Instructors: Dan Clark, Mark Nelson
+#
+#Date: October 15, 2017
 
-Author: Isaac DeMello
-
-Class: ICS 355 - Security and Trust
-
-Instructors: Dan Clark, Mark Nelson
-
-Date: October 15, 2017
-'''
 
 class User:
     
@@ -20,35 +20,23 @@ class User:
         self.USBalance = float(USBalance)
         self.EURBalance = float(EURBalance)
         self.GBPBalance = float(GBPBalance)
-        User.count += 1
-'''
-Function Name: whoami
-
-Purpose: To check the name of the object quickly
-
-Parameters:
-None
-
-Return Values:
-Returns the name of the object
-'''
 
     def whoami(self):
         print(self.name)
         return self.name
-'''
-Function Name: deposit
 
-Purpose: Add an amount of a type of currency to the users account
+#Function Name: deposit
+#
+#Purpose: Add an amount of a type of currency to the users account
+#
+#Parameters:
+#amount: The amount to be added
+#origin: The type of currency to be added
+#
+#return values:
+#This function returns the new account balance
 
-Parameters:
-amount: The amount to be added
-origin: The type of currency to be added
-
-return values:
-This function returns the new account balance
-
-'''
+   
     def deposit(self, amount, origin):
         if origin == 'USD':
             self.USBalance += amount
@@ -59,20 +47,18 @@ This function returns the new account balance
         else:
             self.GBPBalance += amount
             return self.GBPBalance
-'''
-Function Name: withdraw
 
-Purpose: This function subtracts a value from the users account
-         If there are insufficient funds the program will notify the user
-
-Parameters:
-amount: The amount to be withdrawn
-origin: The type of currency to be withdrawn
-
-Return Values: 
-The new account balance after withdrawl
-
-'''
+#Function Name: withdraw
+#
+#Purpose: This function subtracts a value from the users account
+#         If there are insufficient funds the program will notify the user
+#
+#Parameters:
+#amount: The amount to be withdrawn
+#origin: The type of currency to be withdrawn
+#
+#Return Values: 
+#The new account balance after withdrawl
 
     def withdraw(self, amount, origin):
         
@@ -96,24 +82,24 @@ The new account balance after withdrawl
                 return self.GBPBalance
         except RuntimeError:
            print("Insufficient Funds, please enter a valid number")
-'''
-Function Name: convert
 
-Purpose: The convert function takes in user specified inputs, it takes away from the users
-         balance of a particular currency then adds the converted currency to their account.
-         No money is lost in this process
+#Function Name: convert
+#
+#Purpose: The convert function takes in user specified inputs, it takes away from the users
+#         balance of a particular currency then adds the converted currency to their account.
+#         No money is lost in this process
+#
+#Parameters: 
+#originFrom: The type of currency to be converted
+#originTo: The type of currency that will be added after conversion
+#amount: The amount of currency that will be converted
+#
+#Return Values:
+#Dont really even know where to start with this
+#comments and suggestions on how to return this spaghetti method would be 
+#appreciated!
+#Disclaimer: This function works, its just spaghetti
 
-Parameters: 
-originFrom: The type of currency to be converted
-originTo: The type of currency that will be added after conversion
-amount: The amount of currency that will be converted
-
-Return Values:
-Dont really even know where to start with this
-comments and suggestions on how to return this spaghetti method would be 
-appreciated!
-Disclaimer: This function works, its just spaghetti
-'''
     def convert(self, originFrom, originTo, amount):
         if originFrom == 'USD':
             self.USBalance -= amount
@@ -148,18 +134,17 @@ Disclaimer: This function works, its just spaghetti
             elif originTo == 'GBP':
                 self.GBPBalance += amount
                 return self.GBPBalance
-'''
-Function Name: dump
 
-Purpose: The dump function displays instance variables in a user friendly way
+#Function Name: dump
+#
+#Purpose: The dump function displays instance variables in a user friendly way
+#
+#Parameters:
+#None
+#
+#Return Values:
+#None
 
-Parameters:
-None
-
-Return Values:
-None
-
-'''
 
     def dump(self):
         print(self.name + " has the follwing balances: ")
@@ -167,18 +152,18 @@ None
         print("EUR Balance = " + str(self.EURBalance))
         print("GBP Balance = " + str(self.GBPBalance))
 
-'''
-Method Name: detail
 
-Purpose: The method name uses pythons syntatic sugar to return a tuple of all instance variables
+#Method Name: detail
+#
+#Purpose: The method name uses pythons syntatic sugar to return a tuple of all instance variables
+#
+#Parameters:
+#None
+#
+#Return Values:
+#The return values of this function are all the instance variables of the object this method is
+#called upon
 
-Parameters:
-None
-
-Return Values:
-The return values of this function are all the instance variables of the object this method is
-called upon
-'''
 
     def detail(self):
         return self.name, self.USBalance, self.EURBalance, self.GBPBalance
@@ -263,7 +248,6 @@ Return Values:
 def Interface(username):
 
     print("Welcome " + username.whoami())
-    print(username.whoami())
     Options()
     try:
         choice = int(input())
@@ -310,7 +294,6 @@ def main():
     for i in range (len(userList)):
         userList[i] = userList[i][:-1]
 
-    print(userList)
     
     #Make all the users saved in the database objects so they 
     #Can be easily accessed through the objects methods
