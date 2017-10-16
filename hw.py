@@ -27,12 +27,29 @@ class User:
             self.GBRBalance += amount
             return self.GBRBalance
 
-    def withdraw(self, amount):
-        if amount > self.balance:
-            raise RuntimeError('Insufficient Funds')
-        self.balance -= amount
-        return self.balance
-    
+    def withdraw(self, amount, origin):
+        
+        try:
+            if origin == 'USD':
+                if amount > self.USBalance:
+                    raise RuntimeError('Insufficient Funds')
+                self.USBalance -= amount
+                return self.USBalance
+            
+            elif origin == 'JP':
+                if amount > self.JPBalance:
+                    raise RuntimeError('Insufficient Funds')
+                self.JPBalance -= amount
+                return self.JPBalance
+                
+            else:
+                if amount > self.GBRBalance:
+                    raise RuntimeError('Insufficient Funds')
+                self.GBRBalance -= amount
+                return self.GBRBalance
+        except RuntimeError:
+           print("Insufficient Funds, please enter a valid number")
+
     def dump(self):
         print(self.name + "has the follwing balances: ")
         print("USD Balance = " + str(self.USBalance))
@@ -81,9 +98,13 @@ def Interface(username):
                 currType = str(input("What currency type will you add(USD, JPY, GBR)?\n"))
                 currAmount = int(input("How much will you add?"))
                 username.deposit(currAmount, currType)
-                
+                 
             elif choice == 3:
-                print("Info: WIthdraw will remove money from the users account")
+                print("Info: Withdraw will remove money from the users account")
+                currType = str(input("What currency type will you withdraw(USD, JPY, GBR)?\n"))
+                currAmount = int(input("How much will you withdraw?\n"))
+                username.withdraw(currAmount, currType)
+                
             Options()
             choice = int(input())
 
