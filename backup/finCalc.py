@@ -133,6 +133,9 @@ class User:
             elif originTo == 'GBP':
                 self.GBPBalance += amount
                 return self.GBPBalance
+        else:
+            print("Error invalid amounts");
+            return NULL
 
 #Function Name: dump
 #
@@ -314,8 +317,8 @@ def main():
            Interface(classList[x])
            ufound = 1
 
-    if ufound == 0:
-        print('User not found, please try again')
+        if ufound == 0:
+            print('User not found, please try again')
     
     #this creates a list of tuples so that the write()
     #function can be performed more simply
