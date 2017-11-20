@@ -5,33 +5,18 @@ import csv
 
 def deleteUser(username, data, userList):
     
-    credsList = []
-    with open('userDB.csv') as csvDataFile:
-        csvReader = csv.reader(csvDataFile)
-        for row in csvReader:
-            credsList.append(row)
-    j = 0
-
-    while(credsList[j][0] != username):
-        j+=1
-
     myFile = open('records.csv', 'w')
     print(data)
     i = 0
     while(userList[i].whoami() != data[i][0]):
         i += 1
     
-    credsList.pop(j+1)
     userList.pop(i+1)
-    myFile = open('userDB.csv', 'w')
 
-    with myFile:
-        writer = csv.writer(myFile)
-        writer.writerow(credsList)
 
     Save(userList)
     
-    return data
+    return userList
 
 '''
 Function Name: Converter
@@ -190,7 +175,7 @@ def AdminInterface(data, userList):
                 if isUser(userToBeDeleted, data, userList) == 0:
                     print('Username not found')
                 else:
-                    deleteUser(userToBeDeleted, data, userList)
+                    userList = deleteUser(userToBeDeleted, data, userList)
             elif choice == 6:
                 print("Info: List all users and their balances")
                 for x in range(len(userList)):
