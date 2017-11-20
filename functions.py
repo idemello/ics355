@@ -1,12 +1,31 @@
 from pas import *
+import csv
 
+
+def deleteUser(username, data):
+
+    myFile = open('records.csv', 'w')
+    print( data)
+    i = 0
+    while(username != data[i][0]):
+        i += 1
+
+    data.pop(i)
+    print("*******")
+    print(data)
+
+    with myFile:
+        writer = csv.writer(myFile)
+        writer.writerows(data)
+
+    return data
 '''
 Function Name: Converter
 Purpose: The Converter function converts a certain amount of a currency into another
          the function will subtract the converted amount and add the desired type of 
          currency to the user account
 Parameters:
-convertFrom: This value is the type of currency that the user would like to convert from.
+:convertFrom: This value is the type of currency that the user would like to convert from.
              this currency type is taken away from the user's account BEFORE conversion.
 convertTo:   This value is the type of currency that the user would like to convert to.
              This currency type is add to the user's account AFTER conversion.
@@ -93,13 +112,12 @@ def Interface(username):
                 
             Options()
             choice = int(input())
-    
+     
     except ValueError:
         print("Invalid Entry, please enter a number")
+    quit()
 
-    return 1;
-
-def AdminInterface():
+def AdminInterface(data):
     print("Welcome Admin")
     AdminOptions()
     try:
@@ -129,12 +147,16 @@ def AdminInterface():
                 print("New user created")
             elif choice == 5:
                 print("Info: Delete a user")
+                userToBeDeleted = input("Which user would you like to delete?")
+                deleteUser(userToBeDeleted, data)
+
             AdminOptions()
             choice = int(input())
     
     except ValueError:
         print("Invalid Entry, please enter a number")
     print('Goodbye!')
+    quit()
 
    
 
