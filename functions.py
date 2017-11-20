@@ -3,23 +3,36 @@ from classes import *
 import csv
 
 
-def deleteUser(username, data):
+def deleteUser(username, data, userList):
+    
+    credsList = []
+    with open('userDB.csv') as csvDataFile:
+        csvReader = csv.reader(csvDataFile)
+        for row in csvReader:
+            credsList.append(row)
+    j = 0
+
+    while(credsList[j][0] != username):
+        j+=1
 
     myFile = open('records.csv', 'w')
-    print( data)
-    i = 0
-    while(username != data[i][0]):
-        i += 1
-
-    data.pop(i)
-    print("*******")
     print(data)
+    i = 0
+    while(userList[i].whoami() != data[i][0]):
+        i += 1
+    
+    credsList.pop(j+1)
+    userList.pop(i+1)
+    myFile = open('userDB.csv', 'w')
 
     with myFile:
         writer = csv.writer(myFile)
-        writer.writerows(data)
+        writer.writerow(credsList)
 
+    Save(userList)
+    
     return data
+
 '''
 Function Name: Converter
 Purpose: The Converter function converts a certain amount of a currency into another
@@ -74,7 +87,8 @@ def Options():
     print('1. Maint')
     print('2. Deposit')
     print('3. Withdraw')
-    print('4. Exit')
+    print('4. Transfer')
+    print('5. Exit')
 
 '''
 Function Name:Interface
@@ -92,7 +106,7 @@ def Interface(username):
     Options()
     try:
         choice = int(input())
-        while choice != 4:
+        while choice != 5:
             if choice == 1:
                 print("Info: Maint is used to convert one currency to another")
                 currTypeFrom = str(input("What currency would you like to convert from?\n"))
@@ -110,7 +124,14 @@ def Interface(username):
                 currType = str(input("What currency type will you withdraw(USD, EUR, GBP)?\n"))
                 currAmount = int(input("How much will you withdraw?\n"))
                 username.withdraw(currAmount, currType)
-                
+            
+            elif choice == 4:
+                print("Info: Transfer money from one user to another")
+                transferTo = input("Which user would you like to transfer money to?")
+                currType = input("Which currency would you like to transfer?")
+                amount = float(input("How much would you like to transfer?"))
+                username.transfer(transferTo, currType, amount)
+
             Options()
             choice = int(input())
      
@@ -135,7 +156,7 @@ def AdminInterface(data, userList):
             elif choice == 2:
                 print("Info: Add funds will add money to the users account")
                 username = input('Which user would you like to add funds to?')
-                i = isUser(username, data)
+                i = isUser(username, data, userList)
                 if i == 0:
                     print('Username not found')
                 else:
@@ -148,27 +169,28 @@ def AdminInterface(data, userList):
             elif choice == 3:
                 print("Info: Subtract will remove money from the users account")
                 username = input('Which user would you like to remove funds from?')
-                if isUser(username, data) == 0:
+                i = isUser(username, data, userList)
+                if i == 0:
                     print('Username not found')
                 else:
                     currType = str(input("What currency type will you withdraw(USD, EUR, GBP)?\n"))
                     currAmount = int(input("How much will you withdraw?\n"))
-                    username.withdraw(currAmount, currType)
+                    userList[i].withdraw(currAmount, currType)
                 
             elif choice == 4:
                 print("Info: Add a new user")
                 username = input("Enter the new username")
                 print("Creating new user")
-                userList.append(new_user(username))
+                userList = new_user(username, userList)
                 print("New user created")
 
             elif choice == 5:
                 print("Info: Delete a user")
                 userToBeDeleted = input("Which user would you like to delete?")
-                if IsUser(userToBeDeleted, data) == 0:
+                if isUser(userToBeDeleted, data, userList) == 0:
                     print('Username not found')
                 else:
-                    deleteUser(userToBeDeleted, data)
+                    deleteUser(userToBeDeleted, data, userList)
             elif choice == 6:
                 print("Info: List all users and their balances")
                 for x in range(len(userList)):
@@ -182,6 +204,15 @@ def AdminInterface(data, userList):
     except ValueError:
         print("Invalid Entry, please enter a number")
     
+    Save(userList)
+
+    print('Goodbye!')
+    return userList
+
+def Save(userList):
+    
+    saveList = []
+
     myFile = open('records.csv', 'w')
     for i in range(len(userList)):
         saveList.append(userList[i].detail())
@@ -189,11 +220,6 @@ def AdminInterface(data, userList):
     with myFile:
         writer = csv.writer(myFile)
         writer.writerows(saveList)
-
-    print('Goodbye!')
-    return userList
-
-   
 
 def AdminOptions():
     print('What would you like to do?')
@@ -205,16 +231,13 @@ def AdminOptions():
     print('6. List Users')
     print('7. Exit')
 
-def isUser(username, data):
-    i = 0
-    print(len(data) + 1)
-    for i in range(len(data)):
-        print(data[i][0])
-        if username == data[i][0]:
-            return i
-        else:
-            i = 0
-
-    return i
+def isUser(username, data, userList):
+    
+    result = 0
+    for i in range(len(userList)):
+        if username == userList[i].whoami():
+            result = i
+    
+    return result
 
     

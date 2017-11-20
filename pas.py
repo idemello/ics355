@@ -3,7 +3,8 @@
 import random
 import bcrypt
 import csv
-
+from functions import *
+from classes import *
 
 def get_hashed_password(userPass):
     salt = bcrypt.gensalt()
@@ -13,9 +14,10 @@ def get_hashed_password(userPass):
 def check_password(userPass, hashPass):
     return bcrypt.checkpw(userPass, hashPass)
 
-def new_user(username):
+def new_user(username, userList):
     chances = 3
     newUser = True
+    
 
     while newUser == False:
         newUser = True
@@ -39,18 +41,30 @@ def new_user(username):
     fullHash = get_hashed_password(plainText)
     salt = fullHash[7:29]
     hashedPW = fullHash[29:]
+    userList.append(User(username, 0, 0, 0))
     myData = [[username, hashedPW, salt, fullHash]]
     myRecord =[[username, 0, 'USD', 0, 'EUR', 0, 'GBR']]
+    
 
-    myRecordFile = open('records.csv', 'a')
+    saveList = []
 
-    with myRecordFile:
-        write = csv.writer(myRecordFile)
-        write.writerows(myRecord)
+    userFile = open('records.csv', 'w')
+    for i in range(len(userList)):
+        saveList.append(userList[i].detail())
 
+    with userFile:
+        writer = csv.writer(userFile)
+        writer.writerows(saveList)
+ #   myRecordFile = open('records.csv', 'a')
+#    
+  #  with myRecordFile:
+   #     write = csv.writer(myRecordFile)
+    #    write.writerows(myRecord)
+    
     myFile = open('userDB.csv', 'a')
 
     with myFile:
         writer = csv.writer(myFile)
         writer.writerows(myData)
-
+    
+    return userList

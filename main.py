@@ -1,5 +1,6 @@
-#TODO: incorporate the two different DB's
-#TODO: make it so that the users can transfer funds
+#TODO: USERTo in classes.py needs to be an object not string
+#TODO: Check save method
+#TODO: users not being added properly check list initialization
 
 from classes import *
 from functions import *
@@ -61,8 +62,7 @@ def main():
             if credsList[y][0] == username:
                 userPass = input('Please enter your password')
                 if check_password(userPass, credsList[y][3]):
-                    print('Welcome ' + username)
-                    Interface(credsList[y][0])
+                    Interface(userList[y])
                     break
         if ufound == 0:
             print('User not found, please try again')

@@ -21,6 +21,34 @@ class User:
 #
 #return values:
 #This function returns the new account balance
+    
+    def transfer(self, userTo, currType, amount):
+        
+        try:
+            if currType == 'USD':
+                if amount > self.USBalance:
+                    raise RuntimeError('Insufficient Funds')
+                self.USBalance -= amount
+                userTo.USBalance += amount
+                return self.USBalance
+            
+            elif currType == 'EUR':
+                if amount > self.EURBalance:
+                    raise RuntimeError('Insufficient Funds')
+                self.EURBalance -= amount
+                userTo.EURBalance += amount
+                return self.EURBalance
+                
+            else:
+                if amount > self.GBPBalance:
+                    raise RuntimeError('Insufficient Funds')
+                self.GBPBalance -= amount
+                userTo.EURBalance += amount
+                return self.GBPBalance
+
+        except RuntimeError:
+           print("Insufficient Funds, please enter a valid number")
+
 
    
     def deposit(self, amount, origin):
