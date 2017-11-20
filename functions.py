@@ -97,3 +97,47 @@ def Interface(username):
 
     return 1;
 
+def AdminInterFace():
+    print("Welcome Admin")
+    AdminOptions()
+    try:
+        choice = int(input())
+        while choice != 4:
+            if choice == 1:
+                print("Info: Maint is used to convert one currency to another")
+                currTypeFrom = str(input("What currency would you like to convert from?\n"))
+                currTypeTo = str(input("What currency would you like to convert to?\n"))
+                currAmount = float(input("What amount would you like to convert?\n"))
+                username.convert(currTypeFrom, currTypeTo, currAmount)
+            elif choice == 2:
+                print("Info: Deposit will add money to the users account")
+                currType = str(input("What currency type will you add(USD, EUR, GBP)?\n"))
+                currAmount = int(input("How much will you add?"))
+                username.deposit(currAmount, currType)
+                 
+            elif choice == 3:
+                print("Info: Withdraw will remove money from the users account")
+                currType = str(input("What currency type will you withdraw(USD, EUR, GBP)?\n"))
+                currAmount = int(input("How much will you withdraw?\n"))
+                username.withdraw(currAmount, currType)
+            elif choice == 4:
+                print("Info: Add a new user")
+            elif choice == 5:
+                print("Info: Delete a user")
+            Options()
+            choice = int(input())
+    
+    except ValueError:
+        print("Invalid Entry, please enter a number")
+
+   
+
+def AdminOptions():
+    print('What would you like to do?')
+    print('1. Maint')
+    print('2. Deposit')
+    print('3. Withdraw')
+    print('4. Add User')
+    print('5. Delete User')
+    print('6. Exit')
+
