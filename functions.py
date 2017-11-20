@@ -122,7 +122,7 @@ def AdminInterface(data):
     AdminOptions()
     try:
         choice = int(input())
-        while choice != 6:
+        while choice != 8:
             if choice == 1:
                 print("Info: Maint is used to convert one currency to another")
                 currTypeFrom = str(input("What currency would you like to convert from?\n"))
@@ -130,17 +130,26 @@ def AdminInterface(data):
                 currAmount = float(input("What amount would you like to convert?\n"))
                 username.convert(currTypeFrom, currTypeTo, currAmount)
             elif choice == 2:
-                print("Info: Deposit will add money to the users account")
-                currType = str(input("What currency type will you add(USD, EUR, GBP)?\n"))
-                currAmount = int(input("How much will you add?"))
-                username.deposit(currAmount, currType)
+                print("Info: Add funds will add money to the users account")
+                username = input('Which user would you like to add funds to?')
+                if isUser(username, data) == 0:
+                    print('Username not found')
+                else:
+                    currType = str(input("What currency type will you add(USD, EUR, GBP)?\n"))
+                    currAmount = int(input("How much will you add?"))
+                    username.deposit(currAmount, currType)
                  
             elif choice == 3:
-                print("Info: Withdraw will remove money from the users account")
-                currType = str(input("What currency type will you withdraw(USD, EUR, GBP)?\n"))
-                currAmount = int(input("How much will you withdraw?\n"))
-                username.withdraw(currAmount, currType)
-            elif choice == 4:
+                print("Info: Subtract will remove money from the users account")
+                username = input('Which user would you like to remove funds from?')
+                if isUser(username, data) == 0:
+                    print('Username not found')
+                else:
+                    currType = str(input("What currency type will you withdraw(USD, EUR, GBP)?\n"))
+                    currAmount = int(input("How much will you withdraw?\n"))
+                    username.withdraw(currAmount, currType)
+                
+                elif choice == 4:
                 print("Info: Add a new user")
                 print("Creating new user")
                 new_pw()
@@ -148,8 +157,10 @@ def AdminInterface(data):
             elif choice == 5:
                 print("Info: Delete a user")
                 userToBeDeleted = input("Which user would you like to delete?")
-                deleteUser(userToBeDeleted, data)
-
+                if IsUser(userToBeDeleted, data) == 0:
+                    print('Username not found')
+                else:
+                    deleteUser(userToBeDeleted, data)
             AdminOptions()
             choice = int(input())
     
@@ -163,9 +174,17 @@ def AdminInterface(data):
 def AdminOptions():
     print('What would you like to do?')
     print('1. Maint')
-    print('2. Deposit')
-    print('3. Withdraw')
+    print('2. Add Funds')
+    print('3. Subtract Funds')
     print('4. Add User')
     print('5. Delete User')
     print('6. Exit')
+
+def IsUser(username, data):
+    result = 0
+    for i in range(len(data)):
+        if username == data[i][0]:
+            result = 1
+    
+    return result
 
