@@ -4,19 +4,6 @@ import random
 import bcrypt
 import csv
 
-def Salt():
-
-    salt = []
-    saltChar = random.randrange(33,126)
-    saltChar = chr(saltChar)
-
-    for i in range(10):
-        saltChar = random.randrange(33,126)
-        saltChar = chr(saltChar)
-        salt.append(saltChar)
-
-    salt = "".join(salt)
-    return salt
 
 def get_hashed_password(userPass):
     salt = bcrypt.gensalt()
@@ -26,19 +13,37 @@ def get_hashed_password(userPass):
 def check_password(userPass, hashPass):
     return bcrypt.checkpw(userPass, hashPass)
 
-username = input("Enter your username")
-userInput = input("Enter a password:")
-print("The password is: ")
-hashed = get_hashed_password(userInput)
+def new_pw():
+    chances = 3
+    newUser = True
 
-print("the hash is : " + hashed)
-salt = hashed[7:29]
-hashedPW = hashed[29:]
+    username = input("Please enter the new username: ")
+    while newUser == False:
+        newUser = True
+        with open('userDB.csv', 'r') as f:
+            reader = csv.reader(f)
+            for line in reader:
+                if(row[line] == username):
+                    print("username already in database, please select a different username")
+                    newUser = False
+        username = input("please enter the new username: ")
 
+    plainText = input("Please enter the new password: ")
+    matchPass = input("Please re-enter the password: ")
+    while plainText != matchPass:
+        print("Warning: passwords do not match! Re-enter password")
+        matchPass = input("Please re-enter the password: ")
+        chances -= 1
+        if chances == 0:
+            print('Too many invalid entries, program will shut down')
+            quit()
 
-myData = [[username, hashedPW, salt]]
-myFile = open('userDB.csv', 'a')
-with myFile:
-    writer = csv.writer(myFile)
-    writer.writerows(myData)
+    fullHash = get_hashed_password(plainText)
+    salt = fullHash[7:29]
+    hashedPW = fullHash[29:]
+    myData = [[username, hashedPW, salt, fullHash]]
+    myFile = open('userDB.csv', 'a')
+    with myFile:
+        writer = csv.writer(myFile)
+        writer.writerows(myData)
 

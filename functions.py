@@ -1,3 +1,5 @@
+from pas import *
+
 '''
 Function Name: Converter
 Purpose: The Converter function converts a certain amount of a currency into another
@@ -97,12 +99,12 @@ def Interface(username):
 
     return 1;
 
-def AdminInterFace():
+def AdminInterface():
     print("Welcome Admin")
     AdminOptions()
     try:
         choice = int(input())
-        while choice != 4:
+        while choice != 6:
             if choice == 1:
                 print("Info: Maint is used to convert one currency to another")
                 currTypeFrom = str(input("What currency would you like to convert from?\n"))
@@ -122,13 +124,17 @@ def AdminInterFace():
                 username.withdraw(currAmount, currType)
             elif choice == 4:
                 print("Info: Add a new user")
+                print("Creating new user")
+                new_pw()
+                print("New user created")
             elif choice == 5:
                 print("Info: Delete a user")
-            Options()
+            AdminOptions()
             choice = int(input())
     
     except ValueError:
         print("Invalid Entry, please enter a number")
+    print('Goodbye!')
 
    
 
