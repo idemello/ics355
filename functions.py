@@ -1,4 +1,5 @@
 from pas import *
+from classes import *
 import csv
 
 
@@ -117,27 +118,32 @@ def Interface(username):
         print("Invalid Entry, please enter a number")
     quit()
 
-def AdminInterface(data):
+def AdminInterface(data, userList):
     print("Welcome Admin")
+    saveList = []
     AdminOptions()
     try:
         choice = int(input())
-        while choice != 8:
+        while choice != 7:
             if choice == 1:
                 print("Info: Maint is used to convert one currency to another")
                 currTypeFrom = str(input("What currency would you like to convert from?\n"))
                 currTypeTo = str(input("What currency would you like to convert to?\n"))
                 currAmount = float(input("What amount would you like to convert?\n"))
                 username.convert(currTypeFrom, currTypeTo, currAmount)
+            
             elif choice == 2:
                 print("Info: Add funds will add money to the users account")
                 username = input('Which user would you like to add funds to?')
-                if isUser(username, data) == 0:
+                i = isUser(username, data)
+                if i == 0:
                     print('Username not found')
                 else:
                     currType = str(input("What currency type will you add(USD, EUR, GBP)?\n"))
                     currAmount = int(input("How much will you add?"))
-                    username.deposit(currAmount, currType)
+                    print(userList[i].dump())
+                    userList[i].deposit(currAmount, currType)
+                    print(userList[i].dump())
                  
             elif choice == 3:
                 print("Info: Subtract will remove money from the users account")
@@ -149,11 +155,13 @@ def AdminInterface(data):
                     currAmount = int(input("How much will you withdraw?\n"))
                     username.withdraw(currAmount, currType)
                 
-                elif choice == 4:
+            elif choice == 4:
                 print("Info: Add a new user")
+                username = input("Enter the new username")
                 print("Creating new user")
-                new_pw()
+                userList.append(new_user(username))
                 print("New user created")
+
             elif choice == 5:
                 print("Info: Delete a user")
                 userToBeDeleted = input("Which user would you like to delete?")
@@ -161,13 +169,29 @@ def AdminInterface(data):
                     print('Username not found')
                 else:
                     deleteUser(userToBeDeleted, data)
+            elif choice == 6:
+                print("Info: List all users and their balances")
+                for x in range(len(userList)):
+                    print(userList[x].detail())
+
+            else:
+                print("Please enter a valid number")
             AdminOptions()
             choice = int(input())
     
     except ValueError:
         print("Invalid Entry, please enter a number")
+    
+    myFile = open('records.csv', 'w')
+    for i in range(len(userList)):
+        saveList.append(userList[i].detail())
+
+    with myFile:
+        writer = csv.writer(myFile)
+        writer.writerows(saveList)
+
     print('Goodbye!')
-    quit()
+    return userList
 
    
 
@@ -178,13 +202,19 @@ def AdminOptions():
     print('3. Subtract Funds')
     print('4. Add User')
     print('5. Delete User')
-    print('6. Exit')
+    print('6. List Users')
+    print('7. Exit')
 
-def IsUser(username, data):
-    result = 0
+def isUser(username, data):
+    i = 0
+    print(len(data) + 1)
     for i in range(len(data)):
+        print(data[i][0])
         if username == data[i][0]:
-            result = 1
-    
-    return result
+            return i
+        else:
+            i = 0
 
+    return i
+
+    

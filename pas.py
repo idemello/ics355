@@ -13,11 +13,10 @@ def get_hashed_password(userPass):
 def check_password(userPass, hashPass):
     return bcrypt.checkpw(userPass, hashPass)
 
-def new_pw():
+def new_user(username):
     chances = 3
     newUser = True
 
-    username = input("Please enter the new username: ")
     while newUser == False:
         newUser = True
         with open('userDB.csv', 'r') as f:
@@ -26,7 +25,6 @@ def new_pw():
                 if(row[line] == username):
                     print("username already in database, please select a different username")
                     newUser = False
-        username = input("please enter the new username: ")
 
     plainText = input("Please enter the new password: ")
     matchPass = input("Please re-enter the password: ")
@@ -42,7 +40,16 @@ def new_pw():
     salt = fullHash[7:29]
     hashedPW = fullHash[29:]
     myData = [[username, hashedPW, salt, fullHash]]
+    myRecord =[[username, 0, 'USD', 0, 'EUR', 0, 'GBR']]
+
+    myRecordFile = open('records.csv', 'a')
+
+    with myRecordFile:
+        write = csv.writer(myRecordFile)
+        write.writerows(myRecord)
+
     myFile = open('userDB.csv', 'a')
+
     with myFile:
         writer = csv.writer(myFile)
         writer.writerows(myData)

@@ -9,9 +9,11 @@ import csv
 def main():
 
     print('Welcome to the Financial Database')
-    classList = []
     credsList = []
     recordsList = []
+    saveList = []
+    userList = []
+    
 
     accountList = open("records.csv", "r")
     numUser = 0
@@ -29,18 +31,9 @@ def main():
 
     print(recordsList)
     print(credsList)
-    #put all lines in the database to a list
-    #includes the newline char
-    for line in accountList:
-        userList = accountList.readlines()
-        numUser += 1
 
-    #remove the newline char from the list so that elements
-    #can be easily accessed and parsed
-    for a in range (len(userList)):
-        userList[a] = userList[a][:-1]
-
-    
+    for q in range (len(recordsList)):
+        userList.append(User(recordsList[q][0], recordsList[q][1], recordsList[q][3], recordsList[q][5]))
 
     passCount = 0;
 
@@ -50,13 +43,14 @@ def main():
     #To find a match
     #If a match is found then the user will be able to access
     #The database
-    for c in range(len(credsList)):
+    while True:
         if username == 'Admin':
             for z in range(2):
                 adminPass = input('Please enter your password')
                 if check_password(adminPass, credsList[0][3]):
                     print('Welcome Admin')
-                    AdminInterface(recordsList)
+                    AdminInterface(recordsList, userList)
+                    break
                 else:
                     print('incorrect password! You have ' + str((3 - passCount)) + ' attempts remaining')
                     passCount += 1
@@ -69,24 +63,11 @@ def main():
                 if check_password(userPass, credsList[y][3]):
                     print('Welcome ' + username)
                     Interface(credsList[y][0])
-
+                    break
         if ufound == 0:
             print('User not found, please try again')
             username = input('Please enter your username\n')
         passCount += 1  
-
-    #this creates a list of tuples so that the write()
-    #function can be performed more simply
-    outputList = []
-    for d in range(len(classList)):
-        outputList.append(classList[d].detail())
-
-    outputList.insert(0, '\n')
-    
-    myFile = open('records.csv', 'w')
-    with myFile:
-        writer = csv.writer(myFile)
-        writer.writerows(recordsList)
 
 if __name__ == "__main__":
     main()

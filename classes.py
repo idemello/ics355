@@ -2,7 +2,7 @@ class User:
     
     count = 0
 
-    def __init__(self, name, USBalance, EURBalance, GBPBalance):
+    def __init__(self, name, USBalance, EURBalance,  GBPBalance):
         self.name = name
         self.USBalance = float(USBalance)
         self.EURBalance = float(EURBalance)
@@ -140,7 +140,7 @@ class User:
 
 
 #Method Name: detail
-#
+
 #Purpose: The method name uses pythons syntatic sugar to return a tuple of all instance variables
 #
 #Parameters:
@@ -152,6 +152,6 @@ class User:
 
 
     def detail(self):
-        return self.name, self.USBalance, self.EURBalance, self.GBPBalance
-
+        data =[self.name, self.USBalance, 'USD',  self.EURBalance, 'EUR', self.GBPBalance, 'GBR']
+        return data
 
