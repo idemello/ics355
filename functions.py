@@ -2,6 +2,7 @@
 
 import csv
 import bcrypt
+import getpass 
 
 class User:
     
@@ -231,22 +232,19 @@ def new_user(username, userList):
         for i in range(len(userList)):
             if(username == userList[i].whoami()):
                 newUser = False
-                username = input('Warning: Username already exists, please select another username')
+                username = input('Warning: Username already exists, please select another username\n')
 
     while valid == False:
-        plainText = input("Please enter the new password: ")
+        plainText = getpass.getpass('Please enter your new password')
         if(len(plainText) < 8 or len(plainText) > 32):
                 print('Password must be between 8 and 32 characters')
-            #TODO: check for at least one special character and uppercase chara$
-            #elif(len(plaintext) > 8 and len(plaintext) < 32):
-            #    while(
         else:
             valid = True
-        matchPass = input("Please re-enter the password: ")
+        matchPass = getpass.getpass("Please re-enter the password: ")
     
     while plainText != matchPass:
         print("Warning: passwords do not match! Re-enter password")
-        matchPass = input("Please re-enter the password: ")
+        matchPass = getpass.getpass("Please re-enter the password: ")
         chances -= 1
         if chances == 0:
             print('Too many invalid entries, program will shut down')
@@ -344,7 +342,11 @@ Return Values:
     
 def Interface(username, userList):
 
+    
     print("Welcome " + username.whoami())
+    print(username)
+    print(type(username))
+    
     Options()
     try:
         choice = int(input())
@@ -370,9 +372,14 @@ def Interface(username, userList):
             elif choice == 4:
                 print("Info: Transfer money from one user to another")
                 transferTo = input("Which user would you like to transfer money to?")
-                currType = input("Which currency would you like to transfer?")
-                amount = float(input("How much would you like to transfer?"))
-                username.transfer(transferTo, currType, amount)
+                i = isUser(transferTo, userList)
+                if i == -1:
+                    print('Username not found')
+                else:
+                    transferTo = userList[i]
+                    currType = input("Which currency would you like to transfer?")
+                    amount = float(input("How much would you like to transfer?"))
+                    username.transfer(transferTo, currType, amount) 
             elif choice == 5:
                 print("Info: View account details")
                 username.dump()

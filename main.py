@@ -4,6 +4,7 @@
 
 from functions import *
 import csv
+import getpass
 
 def main():
 
@@ -51,21 +52,20 @@ def main():
     while True:
         if username == 'Admin':
             for z in range(2):
-                adminPass = input('Please enter your password\n')
+                adminPass = getpass.getpass('Password for Admin: ')
                 if check_password(adminPass, userList[0].fullHash):
                     print('Welcome Admin')
                     AdminInterface(userList)
         else:
             for y in range(len(userList)):
                 if userList[y].name == username:
-                    userPass = input('Please enter your password\n')
+                    userPass = getpass.getpass('Password: ')
                     if check_password(userPass, userList[y].fullHash):
                         Interface(userList[y], userList)
                         break
         if ufound == 0:
             print('User not found, please try again')
             username = input('Please enter your username\n')
-        passCount += 1  
     save(userList)
 
 if __name__ == "__main__":
