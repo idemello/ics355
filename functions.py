@@ -1,6 +1,218 @@
-from pas import *
-from classes import *
+#!/bin/python3
+
 import csv
+import bcrypt
+
+class User:
+    
+
+    def __init__(self, name, USBalance, EURBalance,  GBPBalance, hashedPW, salt, fullHash):
+        print('creating new user')
+        self.name = name
+        self.USBalance = float(USBalance)
+        self.EURBalance = float(EURBalance)
+        self.GBPBalance = float(GBPBalance)
+        self.hashedPW = hashedPW
+        self.salt = salt
+        self.fullHash = fullHash
+    
+    def whoami(self):
+        return self.name
+
+    def pwCheck(self, pwUserEntered, hashPass):
+        print(hashass)
+        return bcrypt.checkpw(pwUserEntered, hashPass)
+
+    def newPW(self, userPass):
+        salt = bcrypt.gensalt()
+        return bcrypt.hashpw(userPass, salt)
+
+
+#Function Name: deposit
+#
+#Purpose: Add an amount of a type of currency to the users account
+#
+#Parameters:
+#amount: The amount to be added
+#origin: The type of currency to be added
+#
+#return values:
+#This function returns the new account balance
+    
+    def transfer(self, userTo, currType, amount):
+
+        try:
+            if currType == 'USD':
+                if amount > self.USBalance:
+                    raise RuntimeError('Insufficient Funds')
+                self.USBalance -= amount
+                userTo.USBalance += amount
+                return self.USBalance
+
+            elif currType == 'EUR':
+                if amount > self.EURBalance:
+                    raise RuntimeError('Insufficient Funds')
+                self.EURBalance -= amount
+                userTo.EURBalance += amount
+                return self.EURBalance
+            else:
+                if amount > self.GBPBalance:
+                    raise RuntimeError('Insufficient Funds')
+                self.GBPBalance -= amount
+                userTo.EURBalance += amount
+                return self.GBPBalance
+
+        except RuntimeError:
+            print("Insufficient Funds, please enter a valid number")
+   
+    def deposit(self, amount, origin):
+        if origin == 'USD':
+            self.USBalance += amount
+            return self.USBalance
+        elif origin == 'EUR':
+            self.EURBalance += amount
+            return self.EURBalance
+        else:
+            self.GBPBalance += amount
+            return self.GBPBalance
+
+#Function Name: withdraw
+#
+#Purpose: This function subtracts a value from the users account
+#         If there are insufficient funds the program will notify the user
+#
+#Parameters:
+#amount: The amount to be withdrawn
+#origin: The type of currency to be withdrawn
+#
+#Return Values: 
+#The new account balance after withdrawl
+
+    def withdraw(self, amount, origin):
+        
+        try:
+            if origin == 'USD':
+                if amount > self.USBalance:
+                    raise RuntimeError('Insufficient Funds')
+                self.USBalance -= amount
+                return self.USBalance
+            
+            elif origin == 'EUR':
+                if amount > self.EURBalance:
+                    raise RuntimeError('Insufficient Funds')
+                self.EURBalance -= amount
+                return self.EURBalance
+                
+            else:
+                if amount > self.GBPBalance:
+                    raise RuntimeError('Insufficient Funds')
+                self.GBPBalance -= amount
+                return self.GBPBalance
+        except RuntimeError:
+            print("Insufficient Funds, please enter a valid number")
+
+#Function Name: convert
+#
+#Purpose: The convert function takes in user specified inputs, it takes away fr$
+#         balance of a particular currency then adds the converted currency to $
+#         No money is lost in this process
+#
+#Parameters: 
+#originFrom: The type of currency to be converted
+#originTo: The type of currency that will be added after conversion
+#amount: The amount of currency that will be converted
+#
+#Return Values:
+#Dont really even know where to start with this
+#comments and suggestions on how to return this spaghetti method would be 
+#appreciated!
+#Disclaimer: This function works, its just spaghetti
+
+    def convert(self, originFrom, originTo, amount):
+        if originFrom == 'USD':
+            self.USBalance -= amount
+            if originTo == 'USD':
+                self.USBalance += amount
+                return self.USBalance
+            elif originTo == 'EUR':
+                self.EURBalance += Converter('USD', 'EUR', amount)
+                return self.EURBalance
+            elif originTo == 'GBP':
+                self.GBPBalance += Converter('USD', 'GBP', amount)
+                return self.GBPBalance
+        elif originFrom == 'EUR':
+            self.EURBalance -= amount
+            if originTo == 'USD':
+                self.USBalance += Converter('EUR', 'USD', amount)
+                return self.USBalance
+            elif originTo == 'EUR':
+                self.EURBalance += amount
+                return self.EURBalance
+            elif originTo == 'GBP':
+                self.GBPBalance += Converter('EUR', 'GBP', amount)
+                return self.GBPBalance
+        elif originFrom == 'GBP':
+            self.GBPBalance -= amount
+            if originTo == 'USD':
+                self.USBalance += Converter('GBP', 'USD', amount)
+                return self.USBalance
+            elif originTo == 'EUR':
+                self.EURBalance += Converter('GBP', 'EUR', amount)
+                return self.EURBalance
+            elif originTo == 'GBP':
+                self.GBPBalance += amount
+                return self.GBPBalance
+
+#Function Name: dump
+#
+#Purpose: The dump function displays instance variables in a user friendly way
+#
+#Parameters:
+#None
+#
+#Return Values:
+#None
+
+
+    def dump(self):
+        print(self.name + " has the follwing balances: ")
+        print("USD Balance = " + str(self.USBalance))
+        print("EUR Balance = " + str(self.EURBalance))
+        print("GBP Balance = " + str(self.GBPBalance))
+
+
+
+#Method Name: detail
+
+#Purpose: The method name uses pythons syntatic sugar to return a tuple of all $
+#
+#Parameters:
+#None
+#
+#Return Values:
+#The return values of this function are all the instance variables of the objec$
+#called upon
+
+
+    def detail(self):
+        data =[self.name, self.USBalance, 'USD',  self.EURBalance, 'EUR', self.GBPBalance, 'GBP', self.hashedPW, self.salt, self.fullHash]
+        return data
+
+def save(userList):
+    
+    saveList = []
+    
+    for i in range(len(userList)):
+        saveList.append(userList[i].detail())
+
+    myFile = open('newDB.csv', 'w')
+    
+    with myFile:
+        writer = csv.writer(myFile)
+        writer.writerows(saveList)
+    
+    print('Database updated')
+
 
 def get_hashed_password(userPass):
     salt = bcrypt.gensalt()
@@ -39,27 +251,25 @@ def new_user(username, userList):
         if chances == 0:
             print('Too many invalid entries, program will shut down')
             quit()
-    User(username,0,0,0,0)
     fullHash = get_hashed_password(plainText)
     salt = fullHash[7:29]
     hashedPW = fullHash[29:]
-    userList.append(User(username, 0, 0, 0, hashedPW, salt, fullHash))
+    newUser = User(str(username), 0, 0, 0, str(hashedPW), str(salt), str(fullHash))
     userList.append(newUser)
-
+    save(userList)
     
     return userList
 
-def deleteUser(username, data, userList):
+def deleteUser(username, userList):
     
-    myFile = open('records.csv', 'w')
     i = 0
-    while(userList[i].whoami() != data[i][0]):
+    while(userList[i].whoami() != username):
         i += 1
     
-    userList.pop(i+1)
+    userList.pop(i)
 
 
-    Save(userList)
+    save(userList)
     
     return userList
 
@@ -119,7 +329,8 @@ def Options():
     print('2. Deposit')
     print('3. Withdraw')
     print('4. Transfer')
-    print('5. Exit')
+    print('5. Info')
+    print('6. Exit')
 
 '''
 Function Name:Interface
@@ -131,13 +342,13 @@ Return Values:
 1: The function will return 1 when the user is ready to exit
 '''
     
-def Interface(username):
+def Interface(username, userList):
 
     print("Welcome " + username.whoami())
     Options()
     try:
         choice = int(input())
-        while choice != 5:
+        while choice != 6:
             if choice == 1:
                 print("Info: Maint is used to convert one currency to another")
                 currTypeFrom = str(input("What currency would you like to convert from?\n"))
@@ -162,20 +373,25 @@ def Interface(username):
                 currType = input("Which currency would you like to transfer?")
                 amount = float(input("How much would you like to transfer?"))
                 username.transfer(transferTo, currType, amount)
+            elif choice == 5:
+                print("Info: View account details")
+                username.dump()
+            else:
+                print("Invalid input!")
 
             Options()
             choice = int(input())
      
     except ValueError:
         print("Invalid Entry, please enter a number")
+    save(userList)
     quit()
 
 def AdminInterface(userList):
-    saveList = []
     AdminOptions()
     try:
         choice = int(input())
-        while choice != 7:
+        while choice != 8:
             if choice == 1:
                 print("Info: Maint is used to convert one currency to another")
                 currTypeFrom = str(input("What currency would you like to convert from?\n"))
@@ -221,12 +437,22 @@ def AdminInterface(userList):
                 if isUser(userToBeDeleted, userList) == -1:
                     print('Username not found')
                 else:
-                    userList = deleteUser(userToBeDeleted, data, userList)
+                    deleteUser(userToBeDeleted, userList)
             elif choice == 6:
                 print("Info: List all users and their balances")
                 for x in range(len(userList)):
                     print(userList[x].dump())
-
+            elif choice == 7:
+                print("Info: Transfer money from one user to another")
+                transferTo = input("Which user would you like to transfer money to?")
+                i = isUser(transferTo)
+                if i == -1:
+                    print('Username not found')
+                else:
+                    transferTo = userList[i]
+                    currType = input("Which currency would you like to transfer?")
+                    amount = float(input("How much would you like to transfer?"))
+                    userList[0].transfer(transferTo, currType, amount) 
             else:
                 print("Please enter a valid number")
             AdminOptions()
@@ -235,22 +461,10 @@ def AdminInterface(userList):
     except ValueError:
         print("Invalid Entry, please enter a number")
     
-    Save(userList)
-
-    print('Goodbye!')
-    return userList
-
-def Save(userList):
+    save(userList)
     
-    saveList = []
-
-    myFile = open('records.csv', 'w')
-    for i in range(len(userList)):
-        saveList.append(userList[i].detail())
-
-    with myFile:
-        writer = csv.writer(myFile)
-        writer.writerows(saveList)
+    print('Goodbye!')
+    quit()
 
 def AdminOptions():
     print('What would you like to do?')
@@ -260,7 +474,8 @@ def AdminOptions():
     print('4. Add User')
     print('5. Delete User')
     print('6. List Users')
-    print('7. Exit')
+    print('7. Transfer')
+    print('8. Exit')
 
 def isUser(username,  userList):
     
