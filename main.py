@@ -10,32 +10,31 @@ import csv
 def main():
 
     print('Welcome to the Financial Database')
-    credsList = []
-    recordsList = []
-    saveList = []
     userList = []
-    
+    userInfoList = []
 
     accountList = open("records.csv", "r")
     numUser = 0
     numCreds = 0
 
-    with open('userDB.csv') as csvDataFile:
-        csvReader = csv.reader(csvDataFile)
+    #username[0], Amount(USD)[1], currType(USD)[2], Amount(EUR)[3], currType(EUR)[4], Amount[GBR][5]
+    #currTYpe(GBR)[6], hashedPW[7], salt[8], fullHash[9]
+    
+    with open('newDB.csv') as userInfoFile:
+        csvReader = csv.reader(userInfoFile)
         for row in csvReader:
-            credsList.append(row)
-   
-    with open('records.csv') as recordsCSV:
-       csvReader = csv.reader(recordsCSV)
-       for row in csvReader:
-           recordsList.append(row)
+            userInfoList.append(row)
 
-    print(recordsList)
-    print(credsList)
+    print(userInfoList)
 
-    for q in range (len(recordsList)):
-        userList.append(User(recordsList[q][0], recordsList[q][1], recordsList[q][3], recordsList[q][5]))
+    for q in range (len(userInfoList)-1):
+        print(q)
+        userList.append(User(userInfoList[q][0], userInfoList[q][1], userInfoList[q][3], userInfoList[q][5], userInfoList[q][7], userInfoList[q][8], userInfoList[q][9]))
 
+
+    print(userList)
+    print(userList[0].detail())
+    print(userList[0].fullHash)
     passCount = 0;
 
     username = input('Please enter your username\n')
@@ -47,23 +46,24 @@ def main():
     while True:
         if username == 'Admin':
             for z in range(2):
-                adminPass = input('Please enter your password')
-                if check_password(adminPass, credsList[0][3]):
-                    print('Welcome Admin')
-                    AdminInterface(recordsList, userList)
+                #adminPass = input('Please enter your password\n')
+                #if check_password(adminPass, userList[0].fullHash):
+                    #print('Welcome Admin')
+                    AdminInterface(userList)
                     break
-                else:
+               # else:
                     print('incorrect password! You have ' + str((3 - passCount)) + ' attempts remaining')
                     passCount += 1
             if passCount == 0:
                 quit()
                 
-        for y in range(len(credsList)):
-            if credsList[y][0] == username:
-                userPass = input('Please enter your password')
-                if check_password(userPass, credsList[y][3]):
-                    Interface(userList[y])
-                    break
+        else:
+            for y in range(len(userList)):
+                if userList[y].name == username:
+                    userPass = input('Please enter your password')
+                    if check_password(userPass, userList[y].fullHash):
+                        Interface(userList[y])
+                        break
         if ufound == 0:
             print('User not found, please try again')
             username = input('Please enter your username\n')

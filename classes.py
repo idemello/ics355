@@ -1,15 +1,30 @@
+from functions import *
+import bcrypt
+
 class User:
     
     count = 0
 
-    def __init__(self, name, USBalance, EURBalance,  GBPBalance):
+    def __init__(self, name, USBalance, EURBalance,  GBPBalance, hashedPW, salt, fullHash):
         self.name = name
         self.USBalance = float(USBalance)
         self.EURBalance = float(EURBalance)
         self.GBPBalance = float(GBPBalance)
-
+        self.hashedPW = hashedPW
+        self.salt = salt
+        self.fullHash = fullHash
+    
     def whoami(self):
         return self.name
+
+    def pwCheck(self, pwUserEntered, hashPass):
+        print(hashPass)
+        return bcrypt.checkpw(pwUserEntered, hashPass)
+
+    def newPW(self, userPass):
+        salt = bcrypt.gensalt()
+        return bcrypt.hashpw(userPass, salt)
+
 
 #Function Name: deposit
 #
@@ -180,6 +195,6 @@ class User:
 
 
     def detail(self):
-        data =[self.name, self.USBalance, 'USD',  self.EURBalance, 'EUR', self.GBPBalance, 'GBR']
+        data =[self.name, self.USBalance, 'USD',  self.EURBalance, 'EUR', self.GBPBalance, 'GBR', self.hashedPW, self.salt, self.fullHash]
         return data
 

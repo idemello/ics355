@@ -2,11 +2,56 @@ from pas import *
 from classes import *
 import csv
 
+def get_hashed_password(userPass):
+    salt = bcrypt.gensalt()
+    return bcrypt.hashpw(userPass, salt)
+
+def check_password(userPass, hashPass):
+    return bcrypt.checkpw(userPass, hashPass)
+
+def new_user(username, userList):
+    
+    chances = 3
+    newUser = True
+    valid = False 
+
+    while newUser == False:
+        for i in range(len(userList)):
+            if(username == userList[i].whoami()):
+                newUser = False
+                username = input('Warning: Username already exists, please select another username')
+
+    while valid == False:
+        plainText = input("Please enter the new password: ")
+        if(len(plainText) < 8 or len(plainText) > 32):
+                print('Password must be between 8 and 32 characters')
+            #TODO: check for at least one special character and uppercase chara$
+            #elif(len(plaintext) > 8 and len(plaintext) < 32):
+            #    while(
+        else:
+            valid = True
+        matchPass = input("Please re-enter the password: ")
+    
+    while plainText != matchPass:
+        print("Warning: passwords do not match! Re-enter password")
+        matchPass = input("Please re-enter the password: ")
+        chances -= 1
+        if chances == 0:
+            print('Too many invalid entries, program will shut down')
+            quit()
+    User(username,0,0,0,0)
+    fullHash = get_hashed_password(plainText)
+    salt = fullHash[7:29]
+    hashedPW = fullHash[29:]
+    userList.append(User(username, 0, 0, 0, hashedPW, salt, fullHash))
+    userList.append(newUser)
+
+    
+    return userList
 
 def deleteUser(username, data, userList):
     
     myFile = open('records.csv', 'w')
-    print(data)
     i = 0
     while(userList[i].whoami() != data[i][0]):
         i += 1
@@ -66,6 +111,7 @@ None
 Return:
 None
 '''
+
 def Options():
 
     print('What would you like to do?')
@@ -124,8 +170,7 @@ def Interface(username):
         print("Invalid Entry, please enter a number")
     quit()
 
-def AdminInterface(data, userList):
-    print("Welcome Admin")
+def AdminInterface(userList):
     saveList = []
     AdminOptions()
     try:
@@ -141,8 +186,8 @@ def AdminInterface(data, userList):
             elif choice == 2:
                 print("Info: Add funds will add money to the users account")
                 username = input('Which user would you like to add funds to?')
-                i = isUser(username, data, userList)
-                if i == 0:
+                i = isUser(username,  userList)
+                if i == -1:
                     print('Username not found')
                 else:
                     currType = str(input("What currency type will you add(USD, EUR, GBP)?\n"))
@@ -154,8 +199,9 @@ def AdminInterface(data, userList):
             elif choice == 3:
                 print("Info: Subtract will remove money from the users account")
                 username = input('Which user would you like to remove funds from?')
-                i = isUser(username, data, userList)
-                if i == 0:
+                i = isUser(username,  userList)
+                print(i)
+                if i == -1:
                     print('Username not found')
                 else:
                     currType = str(input("What currency type will you withdraw(USD, EUR, GBP)?\n"))
@@ -172,14 +218,14 @@ def AdminInterface(data, userList):
             elif choice == 5:
                 print("Info: Delete a user")
                 userToBeDeleted = input("Which user would you like to delete?")
-                if isUser(userToBeDeleted, data, userList) == 0:
+                if isUser(userToBeDeleted, userList) == -1:
                     print('Username not found')
                 else:
                     userList = deleteUser(userToBeDeleted, data, userList)
             elif choice == 6:
                 print("Info: List all users and their balances")
                 for x in range(len(userList)):
-                    print(userList[x].detail())
+                    print(userList[x].dump())
 
             else:
                 print("Please enter a valid number")
@@ -216,13 +262,14 @@ def AdminOptions():
     print('6. List Users')
     print('7. Exit')
 
-def isUser(username, data, userList):
+def isUser(username,  userList):
     
-    result = 0
+    result = -1
     for i in range(len(userList)):
+        print(username)
+        print(userList[i].whoami())
         if username == userList[i].whoami():
             result = i
     
     return result
 
-    
