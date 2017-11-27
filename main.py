@@ -30,18 +30,7 @@ def main():
         salt = str(userInfoList[q][8])
         fullHash = str(userInfoList[q][9])
         newUser = User(username, usdAmount, eurAmount, gbpAmount, hashed, salt, fullHash)
-        print(newUser)
         userList.append(newUser)
-
-    print(userList)
-    if len(userList) != 0:
-        print(userList)
-        print(userList[0].detail())
-        print(userList[0].fullHash)
-    
-    else:
-        print('User Database is empty. Please add to the database')
-        AdminInterface(userList)
 
     username = input('Please enter your username\n')
     ufound = 0

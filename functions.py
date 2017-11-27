@@ -8,7 +8,6 @@ class User:
     
 
     def __init__(self, name, USBalance, EURBalance,  GBPBalance, hashedPW, salt, fullHash):
-        print('creating new user')
         self.name = name
         self.USBalance = float(USBalance)
         self.EURBalance = float(EURBalance)
@@ -392,6 +391,7 @@ def Interface(username, userList):
     except ValueError:
         print("Invalid Entry, please enter a number")
     save(userList)
+    print('Goodbye!')
     quit()
 
 def AdminInterface(userList):
