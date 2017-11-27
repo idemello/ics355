@@ -58,73 +58,286 @@ GBR
 
 This is what a run of the program will consist of:
 
+idemello@mango:~/Desktop/ics/ics355$ python3 main.py 
+Welcome to the Financial Database
+Please enter your username
+Admin
+Password for Admin: 
+Welcome Admin
+What would you like to do?
+1. Maint
+2. Add Funds
+3. Subtract Funds
+4. Add User
+5. Delete User
+6. List Users
+7. Transfer
+8. Exit
+6
+Info: List all users and their balances
+Admin has the follwing balances: 
+USD Balance = 1500.0
+EUR Balance = 0.0
+GBP Balance = 0.0
+None
+What would you like to do?
+1. Maint
+2. Add Funds
+3. Subtract Funds
+4. Add User
+5. Delete User
+6. List Users
+7. Transfer
+8. Exit
+4
+Info: Add a new user
+Enter the new usernameIsaac^CTraceback (most recent call last):
+  File "main.py", line 64, in <module>
+    main()
+  File "main.py", line 50, in main
+    AdminInterface(userList)
+  File "/home/idemello/Desktop/ics/ics355/functions.py", line 456, in AdminInterface
+    username = input("Enter the new username")
+KeyboardInterrupt
+idemello@mango:~/Desktop/ics/ics355$ vim functions.py 
+idemello@mango:~/Desktop/ics/ics355$ man nmap
+No manual entry for nmap
+idemello@mango:~/Desktop/ics/ics355$ python3 main.py 
+Welcome to the Financial Database
+Please enter your username
+Admin
+Password for Admin: 
+Welcome Admin
+What would you like to do?
+1. Maint
+2. Add Funds
+3. Subtract Funds
+4. Add User
+5. Delete User
+6. List Users
+7. Transfer
+8. Exit
+6
+Info: List all users and their balances
+Admin has the follwing balances: 
+USD Balance = 1500.0
+EUR Balance = 0.0
+GBP Balance = 0.0
+None
+What would you like to do?
+1. Maint
+2. Add Funds
+3. Subtract Funds
+4. Add User
+5. Delete User
+6. List Users
+7. Transfer
+8. Exit
+4
+Info: Add a new user
+Enter the new username
+Isaac
+Creating new user
+Please enter your new password
+Please re-enter the password: 
+Database updated
+New user created
+What would you like to do?
+1. Maint
+2. Add Funds
+3. Subtract Funds
+4. Add User
+5. Delete User
+6. List Users
+7. Transfer
+8. Exit
+6
+Info: List all users and their balances
+Admin has the follwing balances: 
+USD Balance = 1500.0
+EUR Balance = 0.0
+GBP Balance = 0.0
+None
+Isaac has the follwing balances: 
+USD Balance = 0.0
+EUR Balance = 0.0
+GBP Balance = 0.0
+None
+What would you like to do?
+1. Maint
+2. Add Funds
+3. Subtract Funds
+4. Add User
+5. Delete User
+6. List Users
+7. Transfer
+8. Exit
+4
+Info: Add a new user
+Enter the new username
+Donald Trump
+Creating new user
+Please enter your new password
+Please re-enter the password: 
+Warning: passwords do not match! Re-enter password
+Please re-enter the password: 
+Warning: passwords do not match! Re-enter password
+Please re-enter the password: 
+Warning: passwords do not match! Re-enter password
+Please re-enter the password: 
+Too many invalid entries, program will shut down
+idemello@mango:~/Desktop/ics/ics355$ python3 main.py 
 Welcome to the Financial Database
 Please enter your username
 Isaac
+Password: 
 Welcome Isaac
 What would you like to do?
 1. Maint
 2. Deposit
 3. Withdraw
-4. Exit
-1
-Info: Maint is used to convert one currency to another
-What currency would you like to convert from?
-USD
-What currency would you like to convert to?
-EUR
-What amount would you like to convert?
-1000
+4. Transfer
+5. Info
+6. Exit
+6
+Database updated
+Goodbye!
+idemello@mango:~/Desktop/ics/ics355$ vim main.py 
+idemello@mango:~/Desktop/ics/ics355$ vim functions.py 
+idemello@mango:~/Desktop/ics/ics355$ python3 main.py 
+Welcome to the Financial Database
+Please enter your username
+Isaac
+Password: 
+Welcome Isaac
 What would you like to do?
 1. Maint
 2. Deposit
 3. Withdraw
-4. Exit
-2:
+4. Transfer
+5. Info
+6. Exit
+5
+Info: View account details
+Isaac has the follwing balances: 
+USD Balance = 0.0
+EUR Balance = 0.0
+GBP Balance = 0.0
+What would you like to do?
+1. Maint
+2. Deposit
+3. Withdraw
+4. Transfer
+5. Info
+6. Exit
+2
 Info: Deposit will add money to the users account
 What currency type will you add(USD, EUR, GBP)?
 USD
-How much will you add?99
+How much will you add?1000
 What would you like to do?
 1. Maint
 2. Deposit
 3. Withdraw
-4. Exit
-3
-Info: Withdraw will remove money from the users account
-What currency type will you withdraw(USD, EUR, GBP)?
-GBP
-How much will you withdraw?
-3000
+4. Transfer
+5. Info
+6. Exit
+5
+Info: View account details
+Isaac has the follwing balances: 
+USD Balance = 1000.0
+EUR Balance = 0.0
+GBP Balance = 0.0
 What would you like to do?
 1. Maint
 2. Deposit
 3. Withdraw
-4. Exit
+4. Transfer
+5. Info
+6. Exit
 4
+Info: Transfer money from one user to another
+Which user would you like to transfer money to?Admin
+Which currency would you like to transfer?USD
+How much would you like to transfer?500
+What would you like to do?
+1. Maint
+2. Deposit
+3. Withdraw
+4. Transfer
+5. Info
+6. Exit
+6
+Database updated
+Goodbye!
+idemello@mango:~/Desktop/ics/ics355$ vim functions.py 
+idemello@mango:~/Desktop/ics/ics355$ python3 main.py 
+Welcome to the Financial Database
+Please enter your username
+Admin
+Password for Admin: 
+Password for Admin: 
+Welcome Admin
+What would you like to do?
+1. Maint
+2. Add Funds
+3. Subtract Funds
+4. Add User
+5. Delete User
+6. List Users
+7. Transfer
+8. Exit
+6
+Info: List all users and their balances
+Admin has the follwing balances: 
+USD Balance = 2000.0
+EUR Balance = 0.0
+GBP Balance = 0.0
+None
+Isaac has the follwing balances: 
+USD Balance = 500.0
+EUR Balance = 0.0
+GBP Balance = 0.0
+None
+What would you like to do?
+1. Maint
+2. Add Funds
+3. Subtract Funds
+4. Add User
+5. Delete User
+6. List Users
+7. Transfer
+8. Exit
+5
+Info: Delete a user
+Which user would you like to delete?Isaac
+Database updated
+What would you like to do?
+1. Maint
+2. Add Funds
+3. Subtract Funds
+4. Add User
+5. Delete User
+6. List Users
+7. Transfer
+8. Exit
+6
+Info: List all users and their balances
+Admin has the follwing balances: 
+USD Balance = 2000.0
+EUR Balance = 0.0
+GBP Balance = 0.0
+None
+What would you like to do?
+1. Maint
+2. Add Funds
+3. Subtract Funds
+4. Add User
+5. Delete User
+6. List Users
+7. Transfer
+8. Exit
+8
+Database updated
+Goodbye!
 
-This is after a run of the program:
-
-Isaac
-99.0
-USD
-2843.0954306
-EUR
-0.0
-GBR
-
-Trump
-100000000.0
-USD
-0.0
-EUR
-0.0
-GBR
-
-Satan
-666.0
-USD
-666.0
-EUR
-666.0
-GBR
